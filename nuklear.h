@@ -17470,7 +17470,7 @@ nk_build(struct nk_context *ctx)
     buffer = (nk_byte*)ctx->memory.memory.ptr;
     while (iter != 0) {
         struct nk_window *next = iter->next;
-        if (iter->buffer.last == iter->buffer.begin || (iter->flags & NK_WINDOW_HIDDEN))
+        if (iter->buffer.last == iter->buffer.begin || (iter->flags & NK_WINDOW_HIDDEN) || iter->seq != ctx->seq)
             goto cont;
 
         cmd = nk_ptr_add(struct nk_command, buffer, iter->buffer.last);
