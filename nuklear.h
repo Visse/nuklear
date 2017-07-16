@@ -1782,6 +1782,13 @@ NK_API struct nk_rect nk_layout_space_rect_to_screen(struct nk_context*, struct 
  *      @ctx must point to an previously initialized `nk_context` struct after call `nk_layout_space_begin`
  *      @bounds rectangle to convert from screen space into layout space */
 NK_API struct nk_rect nk_layout_space_rect_to_local(struct nk_context*, struct nk_rect);
+/*  nk_layout_spacer - adds a spacer to the layout
+ *  Parameters:
+ *      @ctx must point to an previously initialized `nk_context`
+ *      @mode must be NK_DYNAMIC or NK_STATIC
+ *      @space how mush space to add*/
+NK_API void nk_layout_spacer(struct nk_context*, int, float);
+
 /* =============================================================================
  *
  *                                  GROUP
@@ -19639,6 +19646,35 @@ nk_layout_space_rect_to_local(struct nk_context *ctx, struct nk_rect ret)
     ret.x += -layout->at_x + (float)*layout->offset_x;
     ret.y += -layout->at_y + (float)*layout->offset_y;
     return ret;
+}
+
+NK_API void nk_layout_spacer(struct nk_context *ctx, int mode, float space)
+{
+    struct nk_window *win;
+    struct nk_panel *layout;
+    struct nk_vec2 spacing;
+    float row_height;
+
+    NK_ASSERT(ctx);
+    NK_ASSERT(ctx->current);
+    NK_ASSERT(ctx->current->layout);
+
+    win = ctx->current;
+    layout = win->layout;
+
+    spacing = ctx->style.window.spacing;
+    row_height = layout->row.height;
+    
+    if (mode == NK_DYNAMIC) {
+        // remaning height
+        float height = layout->at_y - layout->bounds.y + row_height;
+        if (layout->bounds.h > (height+space)) {
+            nk_panel_layout(ctx, win, layout->bounds.h - (height+space), layout->row.columns);
+        }
+    }
+    else if (mode == NK_STATIC) {
+        nk_panel_layout(ctx, win, space, layout->row.columns);
+    }
 }
 
 NK_INTERN void
