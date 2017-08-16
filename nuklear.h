@@ -4148,6 +4148,7 @@ struct nk_context {
     enum nk_button_behavior button_behavior;
     struct nk_configuration_stacks stacks;
     float delta_time_seconds;
+    struct nk_vec2 screen_size;
 
 /* private:
     should only be accessed if you
