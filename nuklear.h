@@ -240,6 +240,12 @@ LICENSE:
 #ifndef NK_NUKLEAR_H_
 #define NK_NUKLEAR_H_
 
+
+#ifdef PISCES_USE_NUKLEAR
+#include "Pisces/build_config.h"
+#define NK_API PISCES_API
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
