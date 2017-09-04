@@ -7787,6 +7787,8 @@ nk_draw_list_setup(struct nk_draw_list *canvas, const struct nk_convert_config *
     NK_ASSERT(elements);
     if (!canvas || !config || !cmds || !vertices || !elements)
         return;
+    
+    nk_draw_list_clear(canvas);
 
     canvas->buffer = cmds;
     canvas->config = *config;
