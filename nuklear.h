@@ -6105,8 +6105,8 @@ nk_subimage_ptr(void *ptr, unsigned short w, unsigned short h, struct nk_rect r)
     s.w = w; s.h = h;
     s.region[0] = (unsigned short)r.x;
     s.region[1] = (unsigned short)r.y;
-    s.region[2] = (unsigned short)r.w;
-    s.region[3] = (unsigned short)r.h;
+    s.region[2] = (unsigned short)(r.x + r.w);
+    s.region[3] = (unsigned short)(r.y + r.h);
     return s;
 }
 
@@ -6119,8 +6119,8 @@ nk_subimage_id(int id, unsigned short w, unsigned short h, struct nk_rect r)
     s.w = w; s.h = h;
     s.region[0] = (unsigned short)r.x;
     s.region[1] = (unsigned short)r.y;
-    s.region[2] = (unsigned short)r.w;
-    s.region[3] = (unsigned short)r.h;
+    s.region[2] = (unsigned short)(r.x + r.w);
+    s.region[3] = (unsigned short)(r.y + r.h);
     return s;
 }
 
@@ -6134,8 +6134,8 @@ nk_subimage_handle(nk_handle handle, unsigned short w, unsigned short h,
     s.w = w; s.h = h;
     s.region[0] = (unsigned short)r.x;
     s.region[1] = (unsigned short)r.y;
-    s.region[2] = (unsigned short)r.w;
-    s.region[3] = (unsigned short)r.h;
+    s.region[2] = (unsigned short)(r.x + r.w);
+    s.region[3] = (unsigned short)(r.y + r.h);
     return s;
 }
 
@@ -8857,8 +8857,8 @@ nk_draw_list_add_image(struct nk_draw_list *list, struct nk_image texture,
         struct nk_vec2 uv[2];
         uv[0].x = (float)texture.region[0]/(float)texture.w;
         uv[0].y = (float)texture.region[1]/(float)texture.h;
-        uv[1].x = (float)(texture.region[0] + texture.region[2])/(float)texture.w;
-        uv[1].y = (float)(texture.region[1] + texture.region[3])/(float)texture.h;
+        uv[1].x = (float)texture.region[2]/(float)texture.w;
+        uv[1].y = (float)texture.region[3]/(float)texture.h;
         nk_draw_list_push_rect_uv(list, nk_vec2(rect.x, rect.y),
             nk_vec2(rect.x + rect.w, rect.y + rect.h),  uv[0], uv[1], color);
     } else nk_draw_list_push_rect_uv(list, nk_vec2(rect.x, rect.y),
@@ -12390,8 +12390,8 @@ nk_font_atlas_bake(struct nk_font_atlas *atlas, int *width, int *height,
         cursor->img.h = (unsigned short)*height;
         cursor->img.region[0] = (unsigned short)(atlas->custom.x + nk_cursor_data[i][0].x);
         cursor->img.region[1] = (unsigned short)(atlas->custom.y + nk_cursor_data[i][0].y);
-        cursor->img.region[2] = (unsigned short)nk_cursor_data[i][1].x;
-        cursor->img.region[3] = (unsigned short)nk_cursor_data[i][1].y;
+        cursor->img.region[2] = cursor->img.region[0] + (unsigned short)nk_cursor_data[i][1].x;
+        cursor->img.region[3] = cursor->img.region[1] + (unsigned short)nk_cursor_data[i][1].y;
         cursor->size = nk_cursor_data[i][1];
         cursor->offset = nk_cursor_data[i][2];
     }}
