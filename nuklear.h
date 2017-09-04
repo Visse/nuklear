@@ -13904,7 +13904,7 @@ nk_widget_text_wrap(struct nk_command_buffer *o, struct nk_rect b,
     int done = 0;
     struct nk_rect line;
     struct nk_text text;
-    NK_INTERN nk_rune seperator[] = {' '};
+    NK_STORAGE nk_rune seperator[] = {' '};
 
     NK_ASSERT(o);
     NK_ASSERT(t);
